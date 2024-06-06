@@ -1,4 +1,6 @@
+"use client"
 import ServiceCard from '@/components/service-card';
+import { excelToJson } from '@/lib/helpers';
 import React from 'react'
 
 const data = [
@@ -18,6 +20,12 @@ const data = [
 
 const page = () => {
 
+  const submitForm = async (formData) => {
+    for (const [key, value] of formData.entries()) {
+      const json = await excelToJson(value);
+      console.log(key, ":", json)
+    }
+  }
 
 
   return (
@@ -30,9 +38,10 @@ const page = () => {
 
 
       <div className='max-w-lg m-auto'>
-        <div className='space-y-2 my-2'>
-        {data.map((service, i) => <ServiceCard key={i} data={service} />)}
-        </div>
+        <form className='space-y-2 my-2' action={submitForm}>
+          {data.map((service, i) => <ServiceCard key={i} data={service} />)}
+          <button className='bg-green-600 text-white px-4 py-2 rounded-md'>Submit</button>
+        </form>
       </div>
     </div>
   )
