@@ -9,6 +9,7 @@ const ExcelToJson = () => {
     e.preventDefault();
     var file = e.target.files[0];
     setFile(file);
+    console.log(file)
   }
 
   const addData = (data, name) => {
