@@ -46,17 +46,17 @@ const ServiceCard = ({ data }) => {
                 />
                 <label htmlFor={`${data.id}-checkbox`} className='ml-2'>{data.name}</label>
             </div>
-            {showFileInput && (
+            {/* {showFileInput && (
                 <div className='flex gap-2'>
                     <label htmlFor={data.id} className='flex items-center gap-2 bg-[#1e1e1e]/60 hover:bg-[#1e1e1e]/100 cursor-pointer px-3 py-1 rounded transition-all duration-150 ease-in-out' title={file?.name}>{textLabel}{!file && <IoCloudUpload />}</label>
                     <input type='file' id={data.id} name={data.id} className='hidden' onChange={selectFile} ref={fileRef} />
                     {file && (
                         <button className='hover:text-red-700 text-red-600' onClick={deleteFile}>
                             <MdCancel />
-                        </button>
+                          </button>
                     )}
                 </div>
-            )}
+            )} */}
         </div>
     )
 }

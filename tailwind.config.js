@@ -12,6 +12,13 @@ module.exports = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      textColor: {
+        pvBlue: "rgb(139,195,241)",
+        trustgreen:"rgba(3,142,96,1)",
+        transparencyyellow:"rgba(216,157,8,1)",
+        excellenceBlue:"rgba(46,148,234,1)",
+        DarkBlue:"rgba(6,78,137,1)"
+      }
     },
   },
   plugins: [],

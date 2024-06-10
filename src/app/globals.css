@@ -3,7 +3,24 @@
 @tailwind utilities;
 
 
-body{
+body {
     background-color: rgba(0, 0, 0, 0.947);
-    color: white;
+    color: white
+}
+
+.divBg {
+    position: relative;
+    z-index: 1;
+}
+
+.divBg:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(134deg, rgba(99, 174, 237, .4) -1.23%, rgba(134, 193, 243, .4) 69.59%, hsla(0, 0%, 100%, .4) 132.08%);
+    opacity: .35;
 }
