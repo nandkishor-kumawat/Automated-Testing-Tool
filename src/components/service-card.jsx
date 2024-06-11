@@ -39,7 +39,7 @@ const ServiceCard = ({ data }) => {
     return (
         <div className='flex items-center h-12 border-gray-700 border px-2 py-2 rounded-md justify-between'>
             <div className='flex items-center mx-2'>
-                <input type='checkbox' className='accent-green-600'
+                <input type='checkbox' className='accent-green-600 h-4 w-4'
                     onChange={handleCheckboxChange}
                     name={`${data.id}-checkbox`}
                     id={`${data.id}-checkbox`}

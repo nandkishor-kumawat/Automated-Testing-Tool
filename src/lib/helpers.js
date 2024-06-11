@@ -5,10 +5,12 @@ export const excelToJson = (file) => new Promise((resolve, reject) => {
     reader.onload = (e) => {
         const data = e.target.result;
         const workbook = XLSX.read(data, { type: "binary" });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const json = XLSX.utils.sheet_to_json(sheet);
-        resolve(json);
+        const results = {};
+        workbook.SheetNames.forEach(sheetName => {
+            const roa = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+            if (roa.length) results[sheetName] = roa;
+        })
+        resolve(results);
     };
     reader.onerror = (err) => reject(err);
     reader.readAsArrayBuffer(file);

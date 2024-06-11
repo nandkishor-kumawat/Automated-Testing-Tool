@@ -2,59 +2,59 @@ export const data = [
     {
         id: "LegalEntityType",
         name: "Legal Entity Type",
-        postEndpoint: "",
+        postEndpoint: "/api/v{version}/LegalEntityType",
         deleteEndpoint: "",
     },
     {
         id: "LegalEntityTypeDetail",
         name: "Legal Entity Type Detail",
-        postEndpoint: "",
+        postEndpoint: "/api/v{version}/LegalEntityTypeDetail",
         deleteEndpoint: "",
     },
     {
         id: "Role",
         name: "Role",
-        postEndpoint: "",
+        postEndpoint: "/api/v1/Role",
         deleteEndpoint: "",
     },
     {
         id: "Feature",
         name: "Feature",
-        postEndpoint: "",
+        postEndpoint: "/api/v1/Feature",
         deleteEndpoint: "",
     },
     {
         id: "Subscription",
         name: "Subscription",
-        postEndpoint: "",
+        postEndpoint: "/api/v{version}/Subscription",
         deleteEndpoint: "",
     },
     {
         id: "SubscriptionConfiguration",
         name: "Subscription Configuration",
-        postEndpoint: "",
+        postEndpoint: "/api/v{version}/SubscriptionConfiguration",
         deleteEndpoint: "",
     },
     {
         id: "FeatureRolePermission",
         name: "Feature Role Permission",
-        postEndpoint: "",
+        postEndpoint: "/api/v2/FeatureRolePermission",
         deleteEndpoint: "",
     },
     {
         id: "Department",
         name: "Department",
-        postEndpoint: "",
+        postEndpoint: "/api/v{version}/Department",
         deleteEndpoint: "",
     },
     {
         id: "LegalEntity",
         name: "Legal Entity",
-        postEndpoint: "",
+        postEndpoint: "/api/v{version}/LegalEntity",
         deleteEndpoint: "",
     },
     {
-        id: "LegalEntityAddressMapping",
+        id: "----------",
         name: "Legal Entity Address Mapping",
         postEndpoint: "",
         deleteEndpoint: "",
@@ -62,7 +62,7 @@ export const data = [
     {
         id: "User",
         name: "User",
-        postEndpoint: "",
+        postEndpoint: "/api/v{version}/User",
         deleteEndpoint: "",
     }
 ]
