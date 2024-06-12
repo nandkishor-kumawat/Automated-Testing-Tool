@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog"
 import { TableDemo } from './table-data';
 import { ScrollArea } from './ui/scroll-area';
+import StickyHeadTable from './mui-table';
 
 
 const Preview = ({
@@ -21,7 +22,7 @@ const Preview = ({
 }) => {
     const firstSheet = Object.keys(fileData)[0]
     const [currentKey, setCurrentKey] = useState('');
-    
+
     useEffect(() => {
         setCurrentKey(firstSheet)
     }, [firstSheet])
@@ -49,11 +50,14 @@ const Preview = ({
                                 <button className='bg-purple-600 py-2 w-full rounded-md' onClick={uploadData}>Upload Data</button>
                             </div>
                         </div>
-                        <ScrollArea className='h-full bg-gray-700 flex-1 w-[10vmin] p-4 ' horizontal >
+                        {/* <ScrollArea className='h-full bg-gray-700 flex-1 w-[10vmin] p-4 ' horizontal >
                             <div className='h-full w-[10vw]'>
                                 <TableDemo data={fileData} currentKey={currentKey} />
                             </div>
-                        </ScrollArea>
+                        </ScrollArea> */}
+                        <StickyHeadTable data={fileData} currentKey={currentKey} />
+                        {/* <div className='w-full h-full'> */}
+                        {/* </div> */}
                     </div>
                 </div>
             </DialogContent>
