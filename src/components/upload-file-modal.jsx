@@ -2,10 +2,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Dialog, DialogContent } from './ui/dialog'
 import { IoCloudUploadOutline } from "react-icons/io5";
 import { excelToJson } from '@/lib/helpers';
+import { MdOutlineCancel } from 'react-icons/md';
 
 const UploadFileModal = ({
     isVisible,
-    handleSetData
+    handleSetData,
+    handleClose
 }) => {
 
     const [isLoading, setIsLoading] = useState(false);
@@ -38,6 +40,7 @@ const UploadFileModal = ({
     return (
         <Dialog open={isVisible}>
             <DialogContent className='bg-gray-950'>
+                <button type='button' className='absolute z-[100] top-4 right-4' onClick={handleClose}><MdOutlineCancel size={24} /></button>
                 <div className='flex justify-center items-center h-[35vh]'>
                     <input type="file" className='hidden' accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="file" runat="server" onChange={handleFileChange} />
                     {isLoading ? <div role="status" className='flex items-center flex-col justify-center'>

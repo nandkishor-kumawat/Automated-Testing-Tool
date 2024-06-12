@@ -29,7 +29,18 @@ const Preview = ({
 
 
     const uploadData = async () => {
-        console.log(fileData)
+        const filteredData = {}
+        keys.forEach((key) => {
+            if (fileData[key]) filteredData[key] = fileData[key]
+        });
+
+        const lengthOfData = Object.keys(filteredData).length;
+        if (lengthOfData) {
+            console.log(filteredData)
+        } else {
+            alert("No data to upload")
+        }
+
     }
 
     return (

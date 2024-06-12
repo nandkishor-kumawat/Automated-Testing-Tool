@@ -62,7 +62,7 @@ const page = () => {
       <div className="flex flex-center justify-center items-center mt-4 font-bold">
         <h1>Automated Data Tool</h1>
       </div>
-        <UploadFileModal isVisible={isFileModalVisible} handleSetData={handleSetData} />
+        <UploadFileModal isVisible={isFileModalVisible} handleSetData={handleSetData} handleClose={()=>setIsFileModalVisible(false)}/>
         <Preview isVisible={isPreviewModalVisible} fileData={fileData} keys={keys} />
       <div className='max-w-lg m-auto'>
         <form className='space-y-2 my-2' ref={formRef} onSubmit={submitForm}>
