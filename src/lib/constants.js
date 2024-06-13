@@ -54,7 +54,7 @@ export const data = [
         deleteEndpoint: "",
     },
     {
-        id: "----------",
+        id: "LegalEntityAddressMapping",
         name: "Legal Entity Address Mapping",
         postEndpoint: "",
         deleteEndpoint: "",
@@ -64,5 +64,65 @@ export const data = [
         name: "User",
         postEndpoint: "/api/v{version}/User",
         deleteEndpoint: "",
-    }
+    },
+    {
+        id: "FiscalCalender",
+        name: "Fiscal Calender",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "FiscalYear",
+        name: "Fiscal Year",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "Currency",
+        name: "Currency",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "GLCodeFlagConfiguration",
+        name: "GL Code Flag Configuration",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "ManageBank",
+        name: "Manage Bank",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "Customer",
+        name: "Customer",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "Vendor",
+        name: "Vendor",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "Payment",
+        name: "Payment",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "GeneralLedger",
+        name: "General Ledger",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
+    {
+        id: "IncomeStatement",
+        name: "Income Statement",
+        postEndpoint: "",
+        deleteEndpoint: "",
+    },
 ]

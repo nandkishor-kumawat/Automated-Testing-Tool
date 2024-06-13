@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { Dialog, DialogContent } from './ui/dialog'
 import { IoCloudUploadOutline } from "react-icons/io5";
-import { excelToJson } from '@/lib/helpers';
 import { MdOutlineCancel } from 'react-icons/md';
 
 const UploadFileModal = ({
