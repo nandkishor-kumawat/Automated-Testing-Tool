@@ -1,15 +1,20 @@
 "use client"
+import { AlertBox } from '@/components/alert-box';
+import DeleteConfirmationModal from '@/components/delete-confirmation';
 import Preview from '@/components/preview';
 import ServiceCard from '@/components/service-card';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import UploadFileModal from '@/components/upload-file-modal';
 import { data } from '@/lib/constants';
+import { useTableStore } from '@/store';
 import { redirect } from 'next/navigation';
-import React, {  useLayoutEffect, useRef, useState } from 'react'
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react'
 
 
 
 const page = () => {
   const formRef = useRef();
+  const { setSelectedTables } = useTableStore();
 
   useLayoutEffect(() => {
     const token = localStorage.getItem('token')
@@ -23,57 +28,73 @@ const page = () => {
   const [fileData, setFileData] = useState([]);
   const [keys, setKeys] = useState([])
 
-
-  const submitForm = async (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget)
+  const getFields = () => {
+    const formData = new FormData(formRef.current);
     const values = []
     for (const key of formData.keys()) {
       const [type, other] = key.split('-');
       if (other) values.push(type)
     }
+    return values;
+  }
 
+  const submitForm = async () => {
+    const values = getFields();
     console.log(values);
-    if(values.length){
+    if (values.length) {
+      setSelectedTables(values);
       setKeys(values)
       setIsFileModalVisible(true);
     }
   }
 
-  const deletebtn = () => {
-    const formData = new FormData(formRef.current)
-    for (const [key, value] of formData.entries()) {
-      const [type, other] = key.split('-');
-
-      if (other) {
-        console.log(key)
-      }
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false)
+  const deletebtn = async (e) => {
+    e.preventDefault();
+    const values = getFields();
+    console.log(values);
+    if (values.length) {
+      setSelectedTables(values);
+      setDeleteLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      setDeleteLoading(false);
+      setIsDeleteModalOpen(false);
     }
   }
 
-  const handleSetData = (data) =>{
+  const handleSetData = (data) => {
     setFileData(data);
     setIsFileModalVisible(false);
     setIsPreviewModalVisible(true);
   }
 
+
   return (
-    <div>
-      <div className="flex flex-center justify-center items-center mt-4 font-bold">
-        <h1>Automated Data Tool</h1>
-      </div>
-        <UploadFileModal isVisible={isFileModalVisible} handleSetData={handleSetData} handleClose={()=>setIsFileModalVisible(false)}/>
-        <Preview isVisible={isPreviewModalVisible} fileData={fileData} keys={keys} />
-      <div className='max-w-lg m-auto'>
-        <form className='space-y-2 my-2' ref={formRef} onSubmit={submitForm}>
-          {data.map((service, i) => <ServiceCard key={i} data={service} />)}
-          <div className='flex justify-end gap-4'>
-            <button type='button' className='bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md transition-all duration-100 ease-in-out' onClick={deletebtn}>Delete Selected</button>
-            <button className='bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-all duration-100 ease-in-out'>Next</button>
+    <>
+      <UploadFileModal isVisible={isFileModalVisible} handleSetData={handleSetData} handleClose={() => setIsFileModalVisible(false)} />
+      <Preview isVisible={isPreviewModalVisible} fileData={fileData} keys={keys} />
+      <div className='h-full w-full flex flex-col gap-3 max-w-xl m-auto'>
+        <div className="mt-4 mb-2 px-2">
+          <h1 className='text-3xl font-bold text-balance text-center'>Automated Data Tool</h1>
+        </div>
+        <ScrollArea>
+          <div className='flex-1 px-3'>
+            <form className='space-y-2' ref={formRef}>
+              <div className='flex flex-wrap gap-2'>
+                {data.map((service, i) => <ServiceCard key={i} data={service} />)}
+              </div>
+            </form>
           </div>
-        </form>
+        </ScrollArea>
+        <div className='flex justify-end gap-4 px-2 pb-3'>
+          <DeleteConfirmationModal />
+          <button
+            onClick={submitForm}
+            className='bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-all duration-100 ease-in-out'>Next</button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

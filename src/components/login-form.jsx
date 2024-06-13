@@ -15,23 +15,29 @@ const LoginForm = () => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const { email, password } = Object.fromEntries(formData);
+        if(!new RegExp(/^[a-z0-9._-]+@propvivo.com$/i).test(email)) {
+            setErrMessage("Use your propvivo email address")
+        return
+        }
+
         console.log(email, password);
         setLoading(true)
-        const data = await loginUser(email, password);
+        const data = await loginUser(email.toLowerCase(), password);
         setLoading(false)
         if (data.statusCode === 200) {
             console.log(data)
             localStorage.setItem('token', JSON.stringify(data.authResult.token));
-            router.replace('/')
+            router.replace('/',{scroll:false})
         } else {
             setErrMessage("Invalid credentials")
         }
     }
 
     useEffect(() => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
             setErrMessage('')
-        }, 2500)
+        }, 2500);
+        return () => clearTimeout(timeout)
     }, [errMessage])
 
     return (
@@ -39,13 +45,12 @@ const LoginForm = () => {
             <div className='flex flex-col gap-2 px-8 lg:px-12 md:py-16 py-8 border border-[rgb(139,195,241)]/30 rounded-2xl w-full min-w-[300px] md:max-w-[400px]'>
                 <div>
                     <img src={"/images/favicon.ico"} alt="" className='w-10 ' />
-
                 </div>
                 <h1 className="text-2xl font-medium ">Hello! Welcome Back</h1>
                 <h2 className="text-sm text-[#787878] font-medium">
                     Login using your credentials
                 </h2>
-                <form onSubmit={onSubmit} className=" w-full ">
+                <form onSubmit={onSubmit} className="w-full ">
                     <div className="mb-2">
                         <div className="flex flex-col gap-1 w-full mb-1">
                             <div className="text-gray-700 flex items-center justify-between text-sm">
@@ -54,7 +59,7 @@ const LoginForm = () => {
                             </div>
                             <div className="mb-2 text-center">
                                 <div className="flex border relative focus-within:outline-none focus-within:shadow-input-ring outline-none rounded-lg shadow-sm border-gray-o-400 false">
-                                    <input type="email" name="email" required placeholder="Your Email address" className="relative icon py-2 px-4 pr-7 border-none outline-none ring-0 focus:ring-0 text-sm rounded-lg block w-full p-1 bg-gray-300 text-black" />
+                                    <input type="email" name="email" placeholder="Your Email address" className="relative icon py-2 px-4 pr-7 border-none outline-none ring-0 focus:ring-0 text-sm rounded-lg block w-full p-1 bg-gray-300 text-black" />
                                 </div>
                             </div>
                         </div>

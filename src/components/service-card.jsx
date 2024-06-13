@@ -1,50 +1,34 @@
 "use client"
-import React, { useRef } from 'react'
-import { MdCancel } from "react-icons/md";
-import { useState } from 'react';
-import { IoCloudUpload } from "react-icons/io5";
+import React, { useState } from 'react'
+import { useTableStore } from '@/store';
 
 const ServiceCard = ({ data }) => {
-    const [showFileInput, setShowFileInput] = useState(false);
-    const [file, setFile] = useState('');
-    const fileRef = useRef(null);
+    const { selectedTables, addTable, removeTable } = useTableStore();
+    const [isSelected, setIsSelected] = useState(false);
 
-    const handleCheckboxChange = () => {
-        setShowFileInput(!showFileInput);
+    const handleCheckboxChange = (e) => {
+        setIsSelected(e.target.checked);
+        if (e.target.checked) {
+            addTable(data.id);
+        } else {
+            removeTable(data.id);
+        }
     };
 
-    function checkfile(sender) {
-        var validExts = [".xlsx", ".xls"];
-        var fileExt = sender.value;
-        fileExt = fileExt.substring(fileExt.lastIndexOf('.'));
-        return validExts.indexOf(fileExt) >= 0
-    }
-
-    const selectFile = e => {
-        const isValidType  = checkfile(e.target);
-        if(!isValidType){
-            alert("Only excel files are supported\nSelect a different file!");
-            return;
-        }
-        setFile(e.target.files[0])
-    }
-
-    const deleteFile = () => { 
-        setFile('')
-        fileRef.current.value = '';
-    }
-
-    const textLabel = file ? file?.name?.length > 13 ? file?.name?.slice(0, 12) + '...' : file?.name : "Upload file";
 
     return (
-        <div className='flex items-center h-12 border-gray-700 border px-2 py-2 rounded-md justify-between'>
+        <div
+            style={{
+                backgroundColor: isSelected ? '#193cff' : 'transparent'
+            }}
+            className='cursor-pointer flex flex-grow items-center h-12 border-gray-700 border px-2 py-2 rounded-md justify-between'>
             <div className='flex items-center mx-2'>
-                <input type='checkbox' className='accent-green-600 h-4 w-4'
+                <input type='checkbox' className='accent-green-600 h-4 w-4 hidden'
                     onChange={handleCheckboxChange}
                     name={`${data.id}-checkbox`}
                     id={`${data.id}-checkbox`}
                 />
-                <label htmlFor={`${data.id}-checkbox`} className='ml-2'>{data.name}</label>
+                <label htmlFor={`${data.id}-checkbox`} className='ml-2 cursor-pointer'>{data.name}</label>
             </div>
             {/* {showFileInput && (
                 <div className='flex gap-2'>

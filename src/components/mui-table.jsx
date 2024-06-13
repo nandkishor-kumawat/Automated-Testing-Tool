@@ -12,7 +12,11 @@ const StickyHeadTable = ({
     data, currentKey
 }) => {
     const currentTable = data[currentKey];
-    if (currentTable.length === 0) return <p>No Data</p>
+    if (!currentTable || currentTable.length === 0) return (
+        <div className='flex justify-center items-center w-full'>
+            <p className='text-gray-300 text-xl'>No Data</p>
+        </div>
+    )
 
     const cols = React.useMemo(() => {
         return currentTable.reduce((maxCol, row) => {
@@ -22,7 +26,7 @@ const StickyHeadTable = ({
     }, [currentTable]);
 
     return (
-        <Paper sx={{ width: 'fit-content', overflow: 'hidden', maxWidth: "750px", borderRadius: 0 }}>
+        <Paper sx={{ width: '100%', overflow: 'hidden', maxWidth: "750px", borderRadius: 0 }}>
             <TableContainer sx={{ height: "100%" }} className='bg-gray-700'>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
