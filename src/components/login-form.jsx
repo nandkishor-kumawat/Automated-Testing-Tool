@@ -15,9 +15,9 @@ const LoginForm = () => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const { email, password } = Object.fromEntries(formData);
-        if(!new RegExp(/^[a-z0-9._-]+@propvivo.com$/i).test(email)) {
+        if (!new RegExp(/^[a-z0-9._-]+@propvivo.com$/i).test(email)) {
             setErrMessage("Use your propvivo email address")
-        return
+            return
         }
 
         console.log(email, password);
@@ -27,7 +27,7 @@ const LoginForm = () => {
         if (data.statusCode === 200) {
             console.log(data)
             localStorage.setItem('token', JSON.stringify(data.authResult.token));
-            router.replace('/',{scroll:false})
+            router.replace('/', { scroll: false })
         } else {
             setErrMessage("Invalid credentials")
         }

@@ -1,20 +1,19 @@
 "use client"
-import { AlertBox } from '@/components/alert-box';
 import DeleteConfirmationModal from '@/components/delete-confirmation';
 import Preview from '@/components/preview';
 import ServiceCard from '@/components/service-card';
+import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import UploadFileModal from '@/components/upload-file-modal';
 import { data } from '@/lib/constants';
 import { useTableStore } from '@/store';
 import { redirect } from 'next/navigation';
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react'
-
+import React, { useLayoutEffect, useRef, useState } from 'react'
 
 
 const page = () => {
   const formRef = useRef();
-  const { setSelectedTables } = useTableStore();
+  const { selectedTables, setSelectedTables } = useTableStore();
 
   useLayoutEffect(() => {
     const token = localStorage.getItem('token')
@@ -26,7 +25,6 @@ const page = () => {
   const [isFileModalVisible, setIsFileModalVisible] = useState(false)
   const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false)
   const [fileData, setFileData] = useState([]);
-  const [keys, setKeys] = useState([])
 
   const getFields = () => {
     const formData = new FormData(formRef.current);
@@ -39,29 +37,12 @@ const page = () => {
   }
 
   const submitForm = async () => {
-    const values = getFields();
-    console.log(values);
-    if (values.length) {
-      setSelectedTables(values);
-      setKeys(values)
+    console.log(selectedTables);
+    if (selectedTables.length) {
       setIsFileModalVisible(true);
     }
   }
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false)
-  const deletebtn = async (e) => {
-    e.preventDefault();
-    const values = getFields();
-    console.log(values);
-    if (values.length) {
-      setSelectedTables(values);
-      setDeleteLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      setDeleteLoading(false);
-      setIsDeleteModalOpen(false);
-    }
-  }
 
   const handleSetData = (data) => {
     setFileData(data);
@@ -73,10 +54,11 @@ const page = () => {
   return (
     <>
       <UploadFileModal isVisible={isFileModalVisible} handleSetData={handleSetData} handleClose={() => setIsFileModalVisible(false)} />
-      <Preview isVisible={isPreviewModalVisible} fileData={fileData} keys={keys} />
+      <Preview handleClose={() => setIsPreviewModalVisible(false)} isVisible={isPreviewModalVisible} fileData={fileData} />
       <div className='h-full w-full flex flex-col gap-3 max-w-xl m-auto'>
-        <div className="mt-4 mb-2 px-2">
+        <div className="mt-4 mb-2 px-2 space-y-3">
           <h1 className='text-3xl font-bold text-balance text-center'>Automated Data Tool</h1>
+          <h3 className='text-xl'>Select tables</h3>
         </div>
         <ScrollArea>
           <div className='flex-1 px-3'>
@@ -87,11 +69,12 @@ const page = () => {
             </form>
           </div>
         </ScrollArea>
-        <div className='flex justify-end gap-4 px-2 pb-3'>
+        <div className='flex justify-end gap-4 pb-3 px-3'>
           <DeleteConfirmationModal />
-          <button
+          <Button
+            disabled={!selectedTables.length}
             onClick={submitForm}
-            className='bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-all duration-100 ease-in-out'>Next</button>
+            className='bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition-all duration-100 ease-in-out'>Next</Button>
         </div>
       </div>
     </>
