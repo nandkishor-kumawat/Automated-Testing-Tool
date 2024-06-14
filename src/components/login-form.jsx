@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { loginUser } from '@/lib/helpers'
@@ -9,16 +9,36 @@ const LoginForm = () => {
     const [showPassword, setShowPassword] = React.useState(false);
     const [errMessage, setErrMessage] = React.useState('');
     const [loading, setLoading] = React.useState(false);
-    const router = useRouter()
+    const router = useRouter();
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('')
+
+    const handleBlurEmail = (e) => {
+        const email = e.target.value;
+        setEmailError('');
+        if (!email) return setEmailError('Email is required');
+        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        if (!emailRegex.test(email)) {
+            setEmailError('Please enter a valid email address');
+            return;
+        }
+        if (!new RegExp(/^[a-z0-9._-]+@propvivo.com$/i).test(email)) {
+            setEmailError("Use your propvivo email address")
+        }
+    }
+
+    const handleBlurPassword = (e) => {
+        const password = e.target.value;
+        setPasswordError('');
+        if (!password) return setPasswordError('Password is required');
+        if (password.length < 8) return setPasswordError('Password must be at least 8 characters');
+    }
 
     const onSubmit = async (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
         const { email, password } = Object.fromEntries(formData);
-        if (!new RegExp(/^[a-z0-9._-]+@propvivo.com$/i).test(email)) {
-            setErrMessage("Use your propvivo email address")
-            return
-        }
+
 
         console.log(email, password);
         setLoading(true)
@@ -57,10 +77,19 @@ const LoginForm = () => {
                                 <div className="text-gray-600 font-medium tracking-[0.5px]">E-mail<span className="text-red-500"> *</span>
                                 </div>
                             </div>
-                            <div className="mb-2 text-center">
+                            <div className="mb-2">
                                 <div className="flex border relative focus-within:outline-none focus-within:shadow-input-ring outline-none rounded-lg shadow-sm border-gray-o-400 false">
-                                    <input type="email" name="email" placeholder="Your Email address" className="relative icon py-2 px-4 pr-7 border-none outline-none ring-0 focus:ring-0 text-sm rounded-lg block w-full p-1 bg-gray-300 text-black" />
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        placeholder="Your Email address"
+                                        className="relative icon py-2 px-4 pr-7 border-none outline-none ring-0 focus:ring-0 text-sm rounded-lg block w-full p-1 bg-gray-300 text-black"
+                                        required
+                                        onBlur={handleBlurEmail}
+                                        onFocus={() => setEmailError('')}
+                                    />
                                 </div>
+                                {emailError && <p className='text-red-700 text-sm'>{emailError}</p>}
                             </div>
                         </div>
                     </div>
@@ -69,9 +98,17 @@ const LoginForm = () => {
                             <div className="text-gray-600 font-medium tracking-[0.5px]">Password<span className="text-red-500"> *</span>
                             </div>
                         </div>
-                        <div className="mb-2 text-center">
+                        <div className="mb-2">
                             <div className="flex border relative focus-within:outline-none focus-within:shadow-input-ring outline-none rounded-lg shadow-sm border-gray-o-400 false">
-                                <input type={showPassword ? "text" : "password"} required name="password" placeholder="**********" className="relative icon py-2 px-4 pr-7 border-none outline-none ring-0 focus:ring-0 text-sm rounded-lg block w-full p-1 bg-gray-300 text-black" />
+                                <input
+                                    type={showPassword ? "text" : "password"}
+                                    required
+                                    name="password"
+                                    placeholder="**********"
+                                    className="relative icon py-2 px-4 pr-7 border-none outline-none ring-0 focus:ring-0 text-sm rounded-lg block w-full p-1 bg-gray-300 text-black"
+                                    onBlur={handleBlurPassword}
+                                    onFocus={() => setPasswordError('')}
+                                />
                                 <div className="cursor-pointer p-2 flex justify-center items-center rounded-r-md absolute right-0 top-0 bottom-0 h-full">
                                     <button type='button' onClick={() => setShowPassword(!showPassword)}>
                                         {!showPassword ? <FaEyeSlash color="#000" /> :
@@ -79,6 +116,7 @@ const LoginForm = () => {
                                     </button>
                                 </div>
                             </div>
+                            {passwordError && <p className='text-red-700 text-sm'>{passwordError}</p>}
                         </div>
                     </div>
                     {errMessage && <p className='text-red-600'>{errMessage}</p>}
