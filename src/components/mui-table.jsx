@@ -28,7 +28,17 @@ const StickyHeadTable = ({
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden', maxWidth: "750px", borderRadius: 0 }}>
             <TableContainer sx={{ height: "100%" }} className='bg-gray-700'>
-                <Table stickyHeader aria-label="sticky table">
+                <Table stickyHeader aria-label="sticky table" sx={{
+                    borderCollapse: 'collapse',
+                    // '& td, & th': {
+                    //     borderLeftWidth: '1px',
+                    //     borderRightWidth: '1px',
+                    //     borderLeftColor: 'rgb(209 213 219)',
+                    //     borderRightColor: 'rgb(209 213 219)',
+                    //     '&:last-child': { borderRightWidth: '0' },
+                    //     '&:first-of-type': { borderLeftWidth: '0' },
+                    // }
+                }}>
                     <TableHead>
                         <TableRow>
                             {cols.map((column, index) => (
@@ -36,7 +46,7 @@ const StickyHeadTable = ({
                                     key={index}
                                     sx={{
                                         backgroundColor: 'rgb(229 231 235)',
-                                        py: 1
+                                        py: 1,
                                     }}
                                 >
                                     {String(column)}
@@ -45,20 +55,25 @@ const StickyHeadTable = ({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {currentTable.slice(0, 10).map((row, index) => (
+                        {currentTable.slice(0).map((row, index) => (
                             <TableRow hover role="checkbox" tabIndex={-1} key={index}>
                                 {cols.map((col, index) => (
-                                    <TableCell key={index} sx={{
-                                        color: "#fff",
-                                        minWidth: String(row[col]).length * 9,
-                                        py: 1,
-                                    }}>{String(row[col])}</TableCell>
+                                    <TableCell
+                                        key={index}
+                                        sx={{
+                                            color: "#fff",
+                                            // minWidth: String(row[col]).length * 9,
+                                            py: 1,
+                                            overflow: 'hidden',
+                                            textOverflow: 'ellipsis',
+                                            whiteSpace: 'nowrap',
+                                        }}>{String(row[col])}</TableCell>
                                 ))}
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
-                {currentTable.length > 10 && <p className='text-center text-gray-300 mt-6 mb-3 text-sm'>Data is truncate due to large size</p>}
+                {currentTable.length > 12 && <p className='text-center text-gray-300 mt-6 mb-3 text-sm'>Data is truncate due to large size</p>}
             </TableContainer>
         </Paper>
     );

@@ -15,6 +15,8 @@ import { ScrollArea } from "./ui/scroll-area";
 import Modal from "./modal";
 import { Button } from "./ui/button";
 import TaskDetails from "./task-details";
+import { TableData } from "@/lib/constants";
+import { fetchQuery } from "@/lib/helpers";
 
 export const UploadConfirmationModal = ({
     fileData,
@@ -44,6 +46,7 @@ export const UploadConfirmationModal = ({
         }
     }
 
+
     const handleConfirm = async (e) => {
         e.preventDefault();
 
@@ -53,13 +56,45 @@ export const UploadConfirmationModal = ({
             return;
         }
 
-        if (Object.keys(filteredData).length) {
-            setAddLoading(true);
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-            setAddLoading(false);
-            setAddComplete(true);
-        } else {
+        if (Object.keys(filteredData).length === 0) {
             alert('No data to add');
+            return;
+        }
+
+        setAddLoading(true);
+
+        try {
+            const promises = Object.entries(filteredData).map(async ([tableId, data]) => {
+                const curr = TableData.find(t => t.id === tableId);
+
+                if (!curr) return { id: tableId, result: [] };
+
+                const results = await Promise.all(data.map(async (d) => {
+                    return fetchQuery(curr.postEndpoint, d)
+                }));
+
+                return {
+                    id: tableId,
+                    result: results
+                };
+            });
+
+
+            const results = await Promise.all(promises);
+
+            const refinedResult = results.reduce((acc, curr) => {
+                acc[curr.id] = curr.result;
+                return acc;
+            }, {});
+
+            console.log(refinedResult)
+
+            setResults(refinedResult);
+            setAddComplete(true);
+        } catch (error) {
+            console.error('Error adding data:', error);
+        } finally {
+            setAddLoading(false);
         }
     }
 
@@ -77,7 +112,8 @@ export const UploadConfirmationModal = ({
             <Modal isOpen={isDetailModalOpen} setIsOpen={setIsDetailModalOpen}>
                 <TaskDetails
                     handleClose={handleCloseViewDetailsModal}
-                    result={selectedTables}
+                    result={results}
+                    affectedTables={filteredData}
                     title={"Details of Added Data"}
                 />
             </Modal>
@@ -95,18 +131,18 @@ export const UploadConfirmationModal = ({
                     {addComplete ? (
                         <AlertDialogHeader>
                             <AlertDialogTitle>
-                                Data has been added successfully.
+                                The data has been successfully added.
                             </AlertDialogTitle>
                             <AlertDialogDescription>
                                 You can view the details of the added data.
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                     ) : <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogTitle>Confirmation Required</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. These data will be added to database.
+                            The following information will be added to the database.
                         </AlertDialogDescription>
-                        <h3 className="font-bold">Data will be added in following tables</h3>
+                        <h2 className="font-bold text-sm">List of tables where data will be added</h2>
                         <ScrollArea>
                             <div className='grid grid-cols-2 flex-wrap gap-2'>
                                 {selectedTables.map((table, i) => {

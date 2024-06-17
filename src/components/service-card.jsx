@@ -25,7 +25,7 @@ const ServiceCard = ({ data }) => {
                     name={`${data.id}-checkbox`}
                     id={`${data.id}-checkbox`}
                 />
-                <label htmlFor={`${data.id}-checkbox`}>{data.name}</label>
+                <label htmlFor={`${data.id}-checkbox`} className='text-neutral-500'>{data.name}</label>
             </div>
         </div>
     )

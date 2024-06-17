@@ -1,4 +1,4 @@
-export const data = [
+export const TableData = [
     {
         id: "LegalEntityType",
         name: "Legal Entity Type",
@@ -63,6 +63,12 @@ export const data = [
         id: "User",
         name: "User",
         postEndpoint: "/api/v{version}/User",
+        deleteEndpoint: "",
+    },
+    {
+        id: "Banks",
+        name: "Banks",
+        postEndpoint: "/api/v1/Banks",
         deleteEndpoint: "",
     },
     {

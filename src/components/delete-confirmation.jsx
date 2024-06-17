@@ -57,7 +57,7 @@ export const DeleteConfirmationModal = () => {
             <Modal isOpen={isDetailModalOpen} setIsOpen={setIsDetailModalOpen}>
                 <TaskDetails
                     handleClose={handleCloseViewDetailsModal}
-                    result={selectedTables}
+                    result={results}
                     title="Details of Deleted Data"
                 />
             </Modal>
@@ -82,9 +82,9 @@ export const DeleteConfirmationModal = () => {
                             </AlertDialogDescription>
                         </AlertDialogHeader>
                     ) : <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                        <AlertDialogTitle>Warning: Irreversible Action</AlertDialogTitle>
                         <AlertDialogDescription>
-                            This action cannot be undone. This will permanently delete data from database.
+                            This action is irreversible and will permanently delete data from the database. The following tables will be affected
                         </AlertDialogDescription>
                         <h3 className="font-bold">Selected Tables</h3>
                         <ScrollArea>

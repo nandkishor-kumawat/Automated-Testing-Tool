@@ -29,9 +29,7 @@ const UploadFileModal = ({
         const file = e.target.files[0];
         if (file) {
             setIsLoading(true);
-            // const data = await excelToJson(file);
             workerRef.current?.postMessage(file);
-            // console.log(data)
         }
     }, []);
 

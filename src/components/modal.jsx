@@ -8,7 +8,7 @@ const Modal = ({
 }) => {
     return (
         <Dialog open={isOpen}>
-            <DialogContent className='p-0 max-w-xl m-auto'>
+            <DialogContent className='p-0 max-w-5xl m-auto'>
                 {children}
             </DialogContent>
         </Dialog>
