@@ -30,7 +30,6 @@ const Preview = ({
 
 
 
-
   if (!isVisible) return null;
 
   return (
@@ -48,7 +47,7 @@ const Preview = ({
                       <span className='text-sm text-blue-300'>{fileData[t.id]?.length ?? 0}</span>
                     </p>
                   ))}
-                  {/* {sheetNames.map((t, i) => (
+                  {/* {sheetNames.sort().map((t, i) => (
                     <p key={i} className={`flex gap-2 items-center justify-between px-1 py-2 hover:bg-foreground/10 cursor-pointer transition-all duration-200 ease-in-out ${t === currentKey && "bg-foreground/20"}`} onClick={() => setCurrentKey(t)}>
                       <span className='flex-grow'>{t}</span>
                       <span className='text-sm text-blue-300'>{fileData[t]?.length ?? 0}</span>

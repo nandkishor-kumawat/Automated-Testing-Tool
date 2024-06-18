@@ -70,12 +70,13 @@ export default function ReactVirtualizedTable({
                     <TableCell
                         key={index}
                         sx={{
-                            color: !row[column] ? "#39ff39" : row[column].includes('Error') ? '#eb6041fc' : '#fff',
+                            // color: !row[column] ? "#39ff39" : row[column].includes('Error') ? '#eb6041fc' : '#fff',
+                            color: 'white',
                             py: 1,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                             whiteSpace: 'nowrap',
-                        }}>{String(row[column] ?? "Success")}</TableCell>
+                        }}>{String(row[column])}</TableCell>
                 ))}
             </React.Fragment>
         );
