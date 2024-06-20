@@ -27,6 +27,30 @@ const UploadFileModal = ({
 
     const handleFileChange = useCallback(async (e) => {
         const file = e.target.files[0];
+
+        const formData = new FormData();
+        formData.append("file", file);
+
+        try {
+            setIsLoading(true);
+            const res = await fetch('http://localhost:3000/api/upload', {
+                method: 'POST',
+                body: formData
+            })
+            const data = await res.json();
+            if (res.ok) {
+                handleSetData(data);
+                handleSetData(data.results);
+            } else {
+                console.error('Error:', data);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setIsLoading(false);
+        }
+        e.target.value = null;
+        return
         if (file) {
             setIsLoading(true);
             workerRef.current?.postMessage(file);
@@ -37,7 +61,7 @@ const UploadFileModal = ({
     return (
         <Dialog open={isVisible}>
             <DialogContent className='bg-gray-950'>
-                <button type='button' className='absolute z-[100] top-4 right-4' onClick={handleClose}><MdOutlineCancel size={24} /></button>
+                <button type='button' className='absolute z-[100] top-4 right-4 disabled:text-white/50' disabled={isLoading} onClick={handleClose}><MdOutlineCancel size={24} /></button>
                 <div className='flex justify-center items-center h-[35vh]'>
                     <input type="file" className='hidden' accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" id="file" runat="server" onChange={handleFileChange} />
                     {isLoading ? <div role="status" className='flex items-center flex-col justify-center'>

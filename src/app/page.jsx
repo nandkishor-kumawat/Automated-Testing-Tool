@@ -6,7 +6,8 @@ import ServiceCard from '@/components/service-card';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import UploadFileModal from '@/components/upload-file-modal';
-import { TableData } from '@/lib/constants';
+import { TableData, data } from '@/lib/constants';
+import { jsonToExcel } from '@/lib/json-to-excel';
 import { useTableStore } from '@/store';
 import { redirect } from 'next/navigation';
 import React, { useLayoutEffect, useRef, useState } from 'react'
@@ -16,12 +17,12 @@ const page = () => {
   const formRef = useRef();
   const { selectedTables, setSelectedTables } = useTableStore();
 
-  useLayoutEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      redirect('/login')
-    }
-  }, [])
+  // useLayoutEffect(() => {
+  //   const token = localStorage.getItem('token')
+  //   if (!token) {
+  //     redirect('/login')
+  //   }
+  // }, [])
 
   const [isFileModalVisible, setIsFileModalVisible] = useState(false)
   const [isPreviewModalVisible, setIsPreviewModalVisible] = useState(false)
@@ -38,6 +39,7 @@ const page = () => {
   }
 
   const submitForm = async () => {
+    // return jsonToExcel(data)
     console.log(selectedTables);
     if (selectedTables.length) {
       setIsFileModalVisible(true);

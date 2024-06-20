@@ -1,3 +1,4 @@
+export { jsonToExcel } from './json-to-excel.js';
 import * as XLSX from 'xlsx';
 
 export const excelToJson = (file) => new Promise((resolve, reject) => {
@@ -19,6 +20,7 @@ export const excelToJson = (file) => new Promise((resolve, reject) => {
     reader.onerror = (err) => reject(err);
     reader.readAsArrayBuffer(file);
 });
+
 
 export const loginUser = async (email, password) => {
     if (!email || !password) return null
@@ -44,6 +46,7 @@ export const fetchQuery = async (url, body) => {
         headers: {
             'accept': 'application/json',
             'Content-Type': 'application/json',
+            'cors': 'no-cors',
             Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(body)

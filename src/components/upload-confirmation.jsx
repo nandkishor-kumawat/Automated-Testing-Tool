@@ -69,9 +69,12 @@ export const UploadConfirmationModal = ({
 
                 if (!curr) return { id: tableId, result: [] };
 
+                
                 const results = await Promise.all(data.map(async (d) => {
                     return fetchQuery(curr.postEndpoint, d)
                 }));
+
+                console.log('Results:', results);
 
                 return {
                     id: tableId,
@@ -81,6 +84,7 @@ export const UploadConfirmationModal = ({
 
 
             const results = await Promise.all(promises);
+            console.log('Results:', results);
 
             const refinedResult = results.reduce((acc, curr) => {
                 acc[curr.id] = curr.result;
