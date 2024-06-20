@@ -1,4 +1,5 @@
 "use client"
+import DateRangePicker from '@/components/DateRangePicker';
 import DeleteConfirmationModal from '@/components/delete-confirmation';
 import History from '@/components/history';
 import Preview from '@/components/preview';
@@ -80,7 +81,7 @@ const page = () => {
           </div>
         </div>
 
-        <div className='w-full max-w-sm'>
+        <div className='w-full max-w-md'>
           <History />
         </div>
       </div>
