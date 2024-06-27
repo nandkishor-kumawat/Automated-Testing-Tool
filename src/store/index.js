@@ -3,6 +3,8 @@ import { create } from "zustand";
 
 export const useTableStore = create((set) => ({
     selectedTables: [],
+    fileData: {},
+
     setSelectedTables: (tables) => set((state) => {
         const selectedTables = tables.map((table) => TableData.find((d) => d.id === table));
         return { selectedTables };
@@ -12,5 +14,6 @@ export const useTableStore = create((set) => ({
     })),
     removeTable: (id) => set((state) => ({
         selectedTables: state.selectedTables.filter((table) => table.id !== id)
-    }))
+    })),
+    setFileData: (data) => set({ fileData: data }),
 }));

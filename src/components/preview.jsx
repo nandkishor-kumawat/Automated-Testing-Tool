@@ -16,11 +16,10 @@ import ReactVirtualizedTable from './virtualized-table';
 
 const Preview = ({
   isVisible,
-  fileData,
   handleClose
 }) => {
   const sheetNames = Object.keys(fileData);
-  const { selectedTables } = useTableStore();
+  const { fileData, selectedTables } = useTableStore();
   const [currentKey, setCurrentKey] = useState('');
 
   useEffect(() => {
