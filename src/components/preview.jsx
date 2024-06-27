@@ -7,11 +7,12 @@ import {
   DialogContent,
 } from "@/components/ui/dialog"
 import { ScrollArea } from './ui/scroll-area';
-import StickyHeadTable from './mui-table';
 import { useTableStore } from '@/store';
 import { Button } from './ui/button';
 import UploadConfirmationModal from './upload-confirmation';
 import ReactVirtualizedTable from './virtualized-table';
+import { RxCross2 } from "react-icons/rx";
+
 
 
 const Preview = ({
@@ -21,12 +22,48 @@ const Preview = ({
   const sheetNames = Object.keys(fileData);
   const { fileData, selectedTables } = useTableStore();
   const [currentKey, setCurrentKey] = useState('');
+  const [obj, setObj] = useState();
+
+  const [result, setResult] = useState([])
 
   useEffect(() => {
-    if (selectedTables.length)
+    if (selectedTables.length) {
+      setObj(selectedTables[0].id)
       setCurrentKey(selectedTables[0].id)
+    }
   }, [selectedTables]);
 
+  const deleteSheet = (sheetName) => {
+    setResult(prev => prev.filter(e => e.sheetName !== sheetName))
+    console.log(sheetName)
+  }
+
+  const linkup = (sheetName) => {
+    const sheet = result.find(e => e.sheetName === sheetName)
+    const table = result.find(e => e.id === obj)
+    if (table) {
+      const data = result.filter(e => e.id !== obj)
+      setResult([...data,
+      {
+        id: obj,
+        sheetName
+      }])
+      return
+    }
+    if (sheet && obj === sheet.id) {
+      setResult(prev => prev.filter(e => e.sheetName !== sheetName))
+      return
+    }
+    if (sheet) {
+      return
+    }
+    setResult(p => [
+      ...p, {
+        id: obj,
+        sheetName
+      }])
+  }
+  console.log(JSON.stringify(result, null, 2))
 
 
   if (!isVisible) return null;
@@ -41,10 +78,12 @@ const Preview = ({
               <div className="flex flex-auto w-full overflow-hidden">
                 <ScrollArea className='flex-1 pr-3'>
                   <div className='divide-y divide-gray-400 w-full'>
-                    {selectedTables.map((t, i) => (
-                      <p key={i} title={t.name} className={`flex gap-2 items-center justify-between px-1 py-2 hover:bg-foreground/10 cursor-pointer transition-all duration-200 ease-in-out ${t.id === currentKey && "bg-foreground/20"}`} onClick={() => setCurrentKey(t.id)}>
-                        <span className='flex-grow'>{t.name}</span>
-                        {/* <span className='text-sm text-blue-300'>{fileData[t.id]?.length ?? 0}</span> */}
+                    {selectedTables.map(({ id, name }, i) => (
+                      <p key={i} title={name} className={`flex gap-2 items-center justify-between px-1 py-2 hover:bg-foreground/10 cursor-pointer transition-all duration-200 ease-in-out ${id === currentKey && "bg-foreground/20"}`}
+                        onClick={() => { setObj(id); setCurrentKey(id) }}>
+                        <span className='flex-grow'>{name}</span>
+                        <span className='text-xs'>{result.find(e => e.id == id)?.sheetName || ''}</span>
+                        {/* <span className='text-sm text-blue-300'>{fileData[id]?.length ?? 0}</span> */}
                       </p>
                     ))}
                   </div>
@@ -52,12 +91,27 @@ const Preview = ({
 
                 <ScrollArea className='flex-1 pr-3'>
                   <div className='divide-y divide-gray-400 w-full'>
-                    {sheetNames.sort().map((t, i) => (
-                      <p key={i} title={t} className={`flex gap-2 items-center justify-between px-1 py-2 hover:bg-foreground/10 cursor-pointer transition-all duration-200 ease-in-out ${t === currentKey && "bg-foreground/20"}`} onClick={() => setCurrentKey(t)}>
-                        <span className='flex-grow'>{t}</span>
-                        {/* <span className='text-sm text-blue-300'>{fileData[t]?.length ?? 0}</span> */}
-                      </p>
-                    ))}
+                    {sheetNames.sort().map((sheetName, i) => {
+                      const sheet = result.find(e => e.sheetName === sheetName)
+                      return (
+                        <div
+                          className={`flex gap-2 items-center justify-between w-full text-left ${!sheet && 'hover:bg-foreground/10 cursor-pointer'} transition-all duration-200 ease-in-out ${sheetName === currentKey && "bg-foregrond/20"}`}
+                        >
+                          <button
+                            disabled={sheet}
+                            key={i} title={sheetName}
+                            className='px-1 py-2 flex-1 text-left'
+                            onClick={() => { linkup(sheetName) }}>
+                            <span className='flex-grow'>{sheetName}</span>
+
+                            {/* <span className='text-sm text-blue-300'>{fileData[sheetName]?.length ?? 0}</span> */}
+                          </button>
+                          {sheet && <button className='bg-gray-600 rounded-full p-1 cursor-pointer' onClick={() => deleteSheet(sheetName)}>
+                            <RxCross2 />
+                          </button>}
+                        </div>
+                      )
+                    })}
                   </div>
                 </ScrollArea>
               </div>
