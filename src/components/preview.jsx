@@ -33,9 +33,16 @@ const Preview = ({
     }
   }, [selectedTables]);
 
+  useEffect(() => {
+    selectedTables.forEach(({ id }) => {
+      if (Object.keys(fileData).includes(id.toString())) {
+        setResult(prev => [...prev, { id, sheetName: id }])
+      }
+    });
+  }, [fileData, selectedTables])
+
   const deleteSheet = (sheetName) => {
     setResult(prev => prev.filter(e => e.sheetName !== sheetName))
-    console.log(sheetName)
   }
 
   const linkup = (sheetName) => {
@@ -63,8 +70,6 @@ const Preview = ({
         sheetName
       }])
   }
-  console.log(JSON.stringify(result, null, 2))
-
 
   if (!isVisible) return null;
 
@@ -78,6 +83,7 @@ const Preview = ({
               <div className="flex flex-auto w-full overflow-hidden">
                 <ScrollArea className='flex-1 pr-3'>
                   <div className='divide-y divide-gray-400 w-full'>
+                    <p className='text-center mb-2 text-slate-200'>Table Name</p>
                     {selectedTables.map(({ id, name }, i) => (
                       <p key={i} title={name} className={`flex gap-2 items-center justify-between px-1 py-2 hover:bg-foreground/10 cursor-pointer transition-all duration-200 ease-in-out ${id === currentKey && "bg-foreground/20"}`}
                         onClick={() => { setObj(id); setCurrentKey(id) }}>
@@ -91,6 +97,7 @@ const Preview = ({
 
                 <ScrollArea className='flex-1 pr-3'>
                   <div className='divide-y divide-gray-400 w-full'>
+                    <p className='text-center mb-2 text-slate-200'>Sheet Name</p>
                     {sheetNames.sort().map((sheetName, i) => {
                       const sheet = result.find(e => e.sheetName === sheetName)
                       return (
@@ -101,11 +108,12 @@ const Preview = ({
                           <button
                             disabled={sheet}
                             title={sheetName}
-                            className='px-1 py-2 flex-1 text-left'
-                            onClick={() => { linkup(sheetName) }}>
+                            className='px-1 py-2 flex-1 text-left flex'
+                            onClick={() => { linkup(sheetName); setCurrentKey(sheetName) }}>
                             <span className='flex-grow'>{sheetName}</span>
 
                             {/* <span className='text-sm text-blue-300'>{fileData[sheetName]?.length ?? 0}</span> */}
+                            {/* <span className='text-xs'>{result.find(e => e.sheetName == sheetName)?.id || ''}</span> */}
                           </button>
                           {sheet && <button className='bg-gray-600 rounded-full p-1 cursor-pointer' onClick={() => deleteSheet(sheetName)}>
                             <RxCross2 />
