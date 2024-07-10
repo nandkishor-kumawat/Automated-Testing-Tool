@@ -68,7 +68,7 @@ export const TableData = [
     {
         id: "BankMst",
         name: "Banks",
-        postEndpoint: "/api/v1/Banks",
+        postEndpoint: "/api/v1/Banks/bulk",
         deleteEndpoint: "",
     },
     {

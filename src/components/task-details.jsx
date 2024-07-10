@@ -4,7 +4,6 @@ import { MdErrorOutline } from 'react-icons/md'
 import { ScrollArea } from './ui/scroll-area'
 import { useTableStore } from '@/store'
 import ReactVirtualizedTable from './virtualized-table'
-import { Button } from './ui/button'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material'
 
 const TaskDetails = ({
@@ -32,7 +31,7 @@ const TaskDetails = ({
 	const DataWithError = useMemo(() => {
 		if (!result || !affectedTables) return {};
 		return Object.entries(affectedTables).reduce((acc, [key, value]) => {
-			acc[key] = value.map((v, i) => (result[key]?.[i]?.statusCode === 400) ? { errorMessage: "Error: " + result[key][i].errorMsg, ...v, } : v)
+			acc[key] = value.map((v, i) => (result[key]?.[i]?.statusCode) ? { statusMessage: result[key][i].statusMessage, ...v, } : v)
 			return acc;
 		}, {})
 	}, [affectedTables, result])

@@ -23,7 +23,7 @@ export const UploadConfirmationModal = ({
     handleClosePreviewModal
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { selectedTables } = useTableStore();
+    const { selectedTables, mappedData } = useTableStore();
     const [addLoading, setAddLoading] = useState(false);
     const [addComplete, setAddComplete] = useState(false);
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false)
@@ -35,6 +35,8 @@ export const UploadConfirmationModal = ({
             return acc;
         }, {})
     }, [fileData, selectedTables])
+
+
 
 
     const handleClose = e => {
@@ -56,10 +58,10 @@ export const UploadConfirmationModal = ({
             return;
         }
 
-        if (Object.keys(filteredData).length === 0) {
-            alert('No data to add');
-            return;
-        }
+        // if (Object.keys(filteredData).length === 0) {
+        //     alert('No data to add');
+        //     return;
+        // }
 
         setAddLoading(true);
 
@@ -69,11 +71,19 @@ export const UploadConfirmationModal = ({
 
                 if (!curr) return { id: tableId, result: [] };
 
-                
-                const results = await Promise.all(data.map(async (d) => {
-                    return fetchQuery(curr.postEndpoint, d)
-                }));
 
+                // const results = await Promise.all(data.map(async (d) => {
+                //     return fetchQuery(curr.postEndpoint, d)
+                // }));
+                console.log(curr.postEndpoint)
+                const results = await fetchQuery(curr.postEndpoint, {
+                    ...data,
+                    "startDate": "2024-02-01T10:57:36.455Z",
+                    "state": "4016ce22-4e9c-4681-96f6-4f15afbe8803",
+                    "countryId": "afaf4b7e-be8f-49d5-9afa-8bae64ed3030",
+                    "cityId": "1e2a76a5-58b6-42ac-aade-5291e0a95a2f",
+                    "zipCodeId": "c0454fc7-08f6-4341-a935-fb8570532331",
+                });
                 console.log('Results:', results);
 
                 return {
@@ -126,8 +136,9 @@ export const UploadConfirmationModal = ({
                 <AlertDialogTrigger asChild>
                     <Button className='bg-primary/60 flex-auto' onClick={e => {
                         e.preventDefault();
-                        if (Object.keys(filteredData).length) setIsOpen(true);
-                        else alert('No data to add');
+                        // if (Object.keys(filteredData).length) 
+                        setIsOpen(true);
+                        // else alert('No data to add');
                     }} >Upload Data</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent className="bg-gray-800">

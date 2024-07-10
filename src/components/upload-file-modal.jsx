@@ -26,7 +26,8 @@ const UploadFileModal = ({
     }, []);
 
     const handleFileChange = useCallback(async (e) => {
-        const file = e.target.files[0];
+        const file
+            = e.target.files[0];
 
         const formData = new FormData();
         formData.append("file", file);
